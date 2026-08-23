@@ -3,3 +3,11 @@ go = "1.26.5"
 jq = "1.8.2"
 kind = "0.20.0"
 kubectl = "1.29.0"
+
+[hooks.enter]
+shell = "zsh"
+script = "source <(kubectl completion zsh)"
+
+[hooks.leave]
+shell = "zsh"
+script = "compdef -d kubectl 2>/dev/null; unfunction _kubectl 2>/dev/null; true"
