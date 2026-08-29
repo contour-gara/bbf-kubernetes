@@ -15,3 +15,6 @@ script = "source <(kubectl completion zsh)"
 [hooks.leave]
 shell = "zsh"
 script = "compdef -d kubectl 2>/dev/null; unfunction _kubectl 2>/dev/null; true"
+
+[env]
+KUBE_EDITOR = "nvim"
