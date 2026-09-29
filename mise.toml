@@ -10,11 +10,19 @@ stern = "1.34.0"
 
 [hooks.enter]
 shell = "zsh"
-script = "source <(kubectl completion zsh)"
+script = '''
+_kubectl_completion_init() {
+  add-zsh-hook -d precmd _kubectl_completion_init
+  unfunction _kubectl_completion_init
+  (( $+functions[compdef] )) && source <(kubectl completion zsh)
+}
+autoload -Uz add-zsh-hook
+add-zsh-hook precmd _kubectl_completion_init
+'''
 
 [hooks.leave]
 shell = "zsh"
-script = "compdef -d kubectl 2>/dev/null; unfunction _kubectl 2>/dev/null; true"
+script = "add-zsh-hook -d precmd _kubectl_completion_init 2>/dev/null; compdef -d kubectl 2>/dev/null; unfunction _kubectl 2>/dev/null; true"
 
 [env]
 KUBE_EDITOR = "nvim"
